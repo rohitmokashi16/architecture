@@ -1,0 +1,189 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{multirow}
+\usepackage{sectsty}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\geometry{
+    a4paper,
+    left=20mm,
+    top=20mm,
+    bottom=20mm,
+    right=20mm
+}
+\usepackage{listings}
+
+
+\title{Architecture Homework 1}
+\author{Taylor King }
+\date{January 2016}
+\sectionfont{\Large} 
+\subsectionfont{\large}
+
+\begin{document}
+
+\maketitle
+
+\section{}
+Using the addressing modes below, build a table that contains the following columns: an addressing mode, an example X86 instruction that contains a use of the mode for a source operand, number of memory accesses that occur to obtain the source operand (assume instruction has already been fetched), whether the mode is present in the DLX instruction set.
+\\
+\\
+
+
+%\hskip-1.5cm
+\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
+    \hline
+    Addressing mode & X86 Example & Number of Memory Accesses & Present in DLX Instruction set \\
+    \hline
+    Register & \texttt{add \%rax, \%rcx} & 0 & Yes \\
+    Immediate & \texttt{add \%rax, \$4} & 0 & Yes \\
+    Absolute & \texttt{add \%rax, (\$0x100)} & 1 & Simulatable (Use offset of R0) \\
+    Register indirect & \texttt{add \%rax, (\%rcx)} & 2 & Simulatable (Use 0 as the displacement) \\ 
+    Base plus Displacement & \texttt{add \%rax, 4(\%rcx)} & 1 & Yes\\ 
+    Indexed & \texttt{movl (\%rax, \%rbx), \%rcx} & 1 & No \\ 
+    Scaled Indexed & \texttt{movl (\%rax, \%rbx, 4), \%rcx} & 1 & No \\
+    \hline
+\end{tabular}
+\\
+\\
+
+\section{} 
+
+For what reason(s) are some of the addressing modes above excluded from the DLX instruction set?\\
+\\
+The Indexed and Scaled Indexed addressing modes are removed in order to make it simpler to handle data dependences. The Register Indirect addressing mode is removed because it both requires 2 memory accesses and can be affected by data dependencies. Absolute addressing was removed to keep the convention of $Base + Displacement$ You can simulate addressing by using an offset of R0
+
+\section{} 
+\par{Using the picture below of a byte addressable memory initialized to 0:} \\ 
+\\
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+ & \multicolumn{8}{|l|}{byte number} \\ \hline
+double word & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+0 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
+1 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
+2 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
+\end{tabular}
+\\
+\pagebreak
+\subsection{}
+Assume we have a variable in memory declared and initialized as follows: 
+\texttt{long int i = 0x123456789abcdef0; } 
+Draw enough of the memory to show what it would look like if i is stored in double word number 1 and the memory is Little Endian.
+\\
+\\
+\begin{tabular}{l|l|l|l|l|l|l|l|l|}
+\cline{2-9}
+ & \multicolumn{8}{|l|}{byte number} \\ \hline
+\multicolumn{1}{|l|}{double word} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+\multicolumn{1}{|l|}{0} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
+\multicolumn{1}{|l|}{1} & 0xf0 & 0xde & 0xbc & 0x9a & 0x78 & 0x56 & 0x34 & 0x12 \\ \hline
+\multicolumn{1}{|l|}{2} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
+\end{tabular}
+\subsection{}
+What would be the address of i? \\
+\\
+\textbf{0x08}\\
+\subsection{}
+Draw enough of the memory to show what it would look like if i is stored in double word number 1 and the memory is Big Endian. \\
+\\
+\begin{tabular}{l|l|l|l|l|l|l|l|l|}
+\cline{2-9}
+ & \multicolumn{8}{|l|}{byte number} \\ \hline
+\multicolumn{1}{|l|}{double word} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+\multicolumn{1}{|l|}{0} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
+\multicolumn{1}{|l|}{1} & 0x12 & 0x34 & 0x56 & 0x78 & 0x9a & 0xbc & 0xde & 0xf0 \\ \hline
+\multicolumn{1}{|l|}{2} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
+\end{tabular}\\
+\\
+\subsection{}
+What would be the address of i? \\
+\\
+\textbf{0x08} \\
+\subsection{}
+What are the addresses and the hexadecimal values of all misaligned 2-byte words that can be read from the given 64-bit double word when stored in Little Endian byte order? Only show the addresses and values of 2-byte words that are completely within the 64-bit double word.\\
+\\
+\begin{tabular}{|l|l|}
+\hline
+Address & Value \\ 
+\hline
+0x09 & 0xbedc \\ \hline
+0x0b & 0x789a \\ \hline
+0x0d & 0x3456 \\ \hline
+\end{tabular} \\
+\\
+\subsection{} 
+What are the addresses and the hexadecimal values of all misaligned 2-byte words that can be read from the given 64-bit double word when stored in Big Endian byte order? Only show the addresses and values of 2-byte words that are completely within the 64-bit double word. \\
+\\
+\begin{tabular}{|l|l|} 
+\hline
+Address & Value \\ 
+\hline
+0x09 & 0x3456 \\ \hline
+0x0b & 0x789a \\ \hline
+0x0d & 0xbcde \\ \hline
+\end{tabular} \\\pagebreak
+
+\section{}
+Consider the following three ways to compute the value:\\
+\texttt{A = B + C; D = B * C; E = A + D;}n\\
+\\
+\begin{tabular}{|l|l|l|l|}
+\hline
+accumulator machine & memory-memory machine & stack machine & load-store machine \\ \hline
+\texttt{load b} & \texttt{add a,b,c} & \texttt{push b} & \texttt{load r1, b} \\ 
+\texttt{add c} & \texttt{mult d,b,c} & \texttt{push c} & \texttt{load r2,c} \\
+\texttt{store a} & \texttt{add e,a,d} & \texttt{add} & \texttt{add r3, r1, r2} \\
+\texttt{load b} & & \texttt{pop a} & \texttt{store a, r3} \\
+\texttt{mult c} & & \texttt{push b} & \texttt{mult r4, r1, r2} \\
+\texttt{store d} & & \texttt{push c} & \texttt{store d, r4} \\ 
+\texttt{load a} & & \texttt{mult} & \texttt{add r5, r3, r4} \\
+\texttt{add d} & & \texttt{pop d} & \texttt{store e, r5} \\
+\texttt{store e} & & \texttt{push a} & \\
+& & \texttt{push d} & \\ 
+& & \texttt{add} & \\
+& & \texttt{pop e} & \\
+\hline
+\end{tabular}\\
+\\
+\textbf{Make the following assumptions about these instruction sets: }\\
+\\
+\begin{tabular}{|l|}
+\hline
+All instructions are an integral number of bytes in length \\
+opcode is always 1 byte \\
+a, b, c, d, e represent memory locations \\ 
+memory addresses are 16 bits \\
+operands are 16 bits \\
+load-store machine has 16 general purpose registers \\
+\hline
+\end{tabular} \\
+\\
+\subsection{}
+Using the code sequences above, answer the following questions for each architecture:
+\subsubsection{}
+How many instruction bytes are fetched?\\
+\begin{tabular}{l|ll|ll|ll|l|}
+\hline
+\multicolumn{2}{|l|}{accumulator machine} & \multicolumn{2}{|l|}{memory-memory machine} & \multicolumn{2}{|l|}{stack machine} & \multicolumn{2}{|l|}{load-store machine} \\ \hline
+\multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size \\ \hline
+\multicolumn{1}{|l|}{\texttt{load b}} & 3 & \multicolumn{1}{|l|}{\texttt{add a,b,c}} & & \multicolumn{1}{|l|}{\texttt{push b}} & &\multicolumn{1}{|l|}{\texttt{load r1, b}} & \\ 
+\multicolumn{1}{|l|}{\texttt{add c}} & 5 &\multicolumn{1}{|l|}{\texttt{mult d,b,c}} & & \multicolumn{1}{|l|}{\texttt{push c}} & & \multicolumn{1}{|l|}{\texttt{load r2,c}} & \\
+\multicolumn{1}{|l|}{\texttt{store a}} & 3 & \multicolumn{1}{|l|}{\texttt{add e,a,d}} & & \multicolumn{1}{|l|}{\texttt{add}} & & \multicolumn{1}{|l|}{\texttt{add r3, r1, r2}} & \\
+\multicolumn{1}{|l|}{\texttt{load b}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop a}} & & \multicolumn{1}{|l|}{\texttt{store a, r3}} & \\
+\multicolumn{1}{|l|}{\texttt{mult c}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push b}} & & \multicolumn{1}{|l|}{\texttt{mult r4, r1, r2}} & \\
+\multicolumn{1}{|l|}{\texttt{store d}} & & \multicolumn{1}{|l|}{} & &\multicolumn{1}{|l|}{\texttt{push c}} & & \multicolumn{1}{|l|}{\texttt{store d, r4}} & \\ 
+\multicolumn{1}{|l|}{\texttt{load a}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{mult}} & & \multicolumn{1}{|l|}{\texttt{add r5, r3, r4}} & \\
+\multicolumn{1}{|l|}{\texttt{add d}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop d}} & & \multicolumn{1}{|l|}{\texttt{store e, r5}} & \\
+\multicolumn{1}{|l|}{\texttt{store e}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push a}} & & \multicolumn{1}{|l|}{} & \\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push d}} & & \multicolumn{1}{|l|}{} & \\ 
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{add}} & & \multicolumn{1}{|l|}{} &\\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop e}} & & \multicolumn{1}{|l|}{} &\\
+\hline
+ & \multicolumn{1}{|l|}{0} & & \multicolumn{1}{|l|}{0} & & \multicolumn{1}{|l|}{0} & & \multicolumn{1}{|l|}{0} \\
+ \cline{2-2}\cline{4-4}\cline{6-6}\cline{8-8}
+\end{tabular}
+\section{}
+
+\end{document}
