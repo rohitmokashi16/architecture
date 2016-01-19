@@ -27,11 +27,9 @@
 
 \section{}
 Using the addressing modes below, build a table that contains the following columns: an addressing mode, an example X86 instruction that contains a use of the mode for a source operand, number of memory accesses that occur to obtain the source operand (assume instruction has already been fetched), whether the mode is present in the DLX instruction set.
-\\
-\\
+\vspace{5mm}
 
 
-%\hskip-1.5cm
 \begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
     \hline
     Addressing mode & X86 Example & Number of Memory Accesses & Present in DLX Instruction set \\
@@ -45,18 +43,16 @@ Using the addressing modes below, build a table that contains the following colu
     Scaled Indexed & \texttt{movl (\%rax, \%rbx, 4), \%rcx} & 1 & No \\
     \hline
 \end{tabular}
-\\
-\\
-
+\vspace{5mm}
 \section{} 
-
-For what reason(s) are some of the addressing modes above excluded from the DLX instruction set?\\
-\\
+For what reason(s) are some of the addressing modes above excluded from the DLX instruction set?
+\vspace{10mm}
 The Indexed and Scaled Indexed addressing modes are removed in order to make it simpler to handle data dependences. The Register Indirect addressing mode is removed because it both requires 2 memory accesses and can be affected by data dependencies. Absolute addressing was removed to keep the convention of $Base + Displacement$ You can simulate addressing by using an offset of R0
 
 \section{} 
-\par{Using the picture below of a byte addressable memory initialized to 0:} \\ 
-\\
+Using the picture below of a byte addressable memory initialized to 0:
+\vspace{5mm}
+
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
 \hline
  & \multicolumn{8}{|l|}{byte number} \\ \hline
@@ -65,14 +61,15 @@ double word & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
 1 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
 2 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
 \end{tabular}
-\\
+\vspace{10mm}
+
 \pagebreak
 \subsection{}
 Assume we have a variable in memory declared and initialized as follows: 
 \texttt{long int i = 0x123456789abcdef0; } 
 Draw enough of the memory to show what it would look like if i is stored in double word number 1 and the memory is Little Endian.
-\\
-\\
+\vspace{5mm}
+
 \begin{tabular}{l|l|l|l|l|l|l|l|l|}
 \cline{2-9}
  & \multicolumn{8}{|l|}{byte number} \\ \hline
@@ -82,12 +79,16 @@ Draw enough of the memory to show what it would look like if i is stored in doub
 \multicolumn{1}{|l|}{2} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
 \end{tabular}
 \subsection{}
-What would be the address of i? \\
-\\
-\textbf{0x08}\\
+What would be the address of i? 
+\vspace{5mm}
+
+\textbf{0x08}
+\vspace{5mm}
+
 \subsection{}
-Draw enough of the memory to show what it would look like if i is stored in double word number 1 and the memory is Big Endian. \\
-\\
+Draw enough of the memory to show what it would look like if i is stored in double word number 1 and the memory is Big Endian.
+\vspace{5mm}
+
 \begin{tabular}{l|l|l|l|l|l|l|l|l|}
 \cline{2-9}
  & \multicolumn{8}{|l|}{byte number} \\ \hline
@@ -95,27 +96,34 @@ Draw enough of the memory to show what it would look like if i is stored in doub
 \multicolumn{1}{|l|}{0} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
 \multicolumn{1}{|l|}{1} & 0x12 & 0x34 & 0x56 & 0x78 & 0x9a & 0xbc & 0xde & 0xf0 \\ \hline
 \multicolumn{1}{|l|}{2} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
-\end{tabular}\\
-\\
+\end{tabular}
+\vspace{5mm}
+
 \subsection{}
-What would be the address of i? \\
-\\
-\textbf{0x08} \\
+What would be the address of i? 
+\vspace{5mm}
+
+\textbf{0x08}
+\vspace{5mm}
+
 \subsection{}
-What are the addresses and the hexadecimal values of all misaligned 2-byte words that can be read from the given 64-bit double word when stored in Little Endian byte order? Only show the addresses and values of 2-byte words that are completely within the 64-bit double word.\\
-\\
+What are the addresses and the hexadecimal values of all misaligned 2-byte words that can be read from the given 64-bit double word when stored in Little Endian byte order? Only show the addresses and values of 2-byte words that are completely within the 64-bit double word.
+\vspace{5mm}
+
 \begin{tabular}{|l|l|}
 \hline
 Address & Value \\ 
 \hline
-0x09 & 0xbedc \\ \hline
+0x09 & 0xbcde \\ \hline
 0x0b & 0x789a \\ \hline
 0x0d & 0x3456 \\ \hline
-\end{tabular} \\
-\\
+\end{tabular}
+\vspace{5mm}
+
 \subsection{} 
-What are the addresses and the hexadecimal values of all misaligned 2-byte words that can be read from the given 64-bit double word when stored in Big Endian byte order? Only show the addresses and values of 2-byte words that are completely within the 64-bit double word. \\
-\\
+What are the addresses and the hexadecimal values of all misaligned 2-byte words that can be read from the given 64-bit double word when stored in Big Endian byte order? Only show the addresses and values of 2-byte words that are completely within the 64-bit double word.
+\vspace{5mm}
+
 \begin{tabular}{|l|l|} 
 \hline
 Address & Value \\ 
@@ -123,12 +131,15 @@ Address & Value \\
 0x09 & 0x3456 \\ \hline
 0x0b & 0x789a \\ \hline
 0x0d & 0xbcde \\ \hline
-\end{tabular} \\\pagebreak
+\end{tabular} \pagebreak
 
 \section{}
-Consider the following three ways to compute the value:\\
-\texttt{A = B + C; D = B * C; E = A + D;}n\\
-\\
+Consider the following three ways to compute the value:
+\vspace{5mm}
+
+\texttt{A = B + C; D = B * C; E = A + D;}
+\vspace{5mm}
+
 \begin{tabular}{|l|l|l|l|}
 \hline
 accumulator machine & memory-memory machine & stack machine & load-store machine \\ \hline
@@ -145,10 +156,12 @@ accumulator machine & memory-memory machine & stack machine & load-store machine
 & & \texttt{add} & \\
 & & \texttt{pop e} & \\
 \hline
-\end{tabular}\\
-\\
-\textbf{Make the following assumptions about these instruction sets: }\\
-\\
+\end{tabular}
+\vspace{5mm}
+
+\textbf{Make the following assumptions about these instruction sets: }
+\vspace{5mm}
+
 \begin{tabular}{|l|}
 \hline
 All instructions are an integral number of bytes in length \\
@@ -158,8 +171,9 @@ memory addresses are 16 bits \\
 operands are 16 bits \\
 load-store machine has 16 general purpose registers \\
 \hline
-\end{tabular} \\
-\\
+\end{tabular}
+\vspace{5mm}
+
 \subsection{}
 Using the code sequences above, answer the following questions for each architecture:
 \subsubsection{}
@@ -168,22 +182,141 @@ How many instruction bytes are fetched?\\
 \hline
 \multicolumn{2}{|l|}{accumulator machine} & \multicolumn{2}{|l|}{memory-memory machine} & \multicolumn{2}{|l|}{stack machine} & \multicolumn{2}{|l|}{load-store machine} \\ \hline
 \multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size \\ \hline
-\multicolumn{1}{|l|}{\texttt{load b}} & 3 & \multicolumn{1}{|l|}{\texttt{add a,b,c}} & & \multicolumn{1}{|l|}{\texttt{push b}} & &\multicolumn{1}{|l|}{\texttt{load r1, b}} & \\ 
-\multicolumn{1}{|l|}{\texttt{add c}} & 5 &\multicolumn{1}{|l|}{\texttt{mult d,b,c}} & & \multicolumn{1}{|l|}{\texttt{push c}} & & \multicolumn{1}{|l|}{\texttt{load r2,c}} & \\
-\multicolumn{1}{|l|}{\texttt{store a}} & 3 & \multicolumn{1}{|l|}{\texttt{add e,a,d}} & & \multicolumn{1}{|l|}{\texttt{add}} & & \multicolumn{1}{|l|}{\texttt{add r3, r1, r2}} & \\
-\multicolumn{1}{|l|}{\texttt{load b}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop a}} & & \multicolumn{1}{|l|}{\texttt{store a, r3}} & \\
-\multicolumn{1}{|l|}{\texttt{mult c}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push b}} & & \multicolumn{1}{|l|}{\texttt{mult r4, r1, r2}} & \\
-\multicolumn{1}{|l|}{\texttt{store d}} & & \multicolumn{1}{|l|}{} & &\multicolumn{1}{|l|}{\texttt{push c}} & & \multicolumn{1}{|l|}{\texttt{store d, r4}} & \\ 
-\multicolumn{1}{|l|}{\texttt{load a}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{mult}} & & \multicolumn{1}{|l|}{\texttt{add r5, r3, r4}} & \\
-\multicolumn{1}{|l|}{\texttt{add d}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop d}} & & \multicolumn{1}{|l|}{\texttt{store e, r5}} & \\
-\multicolumn{1}{|l|}{\texttt{store e}} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push a}} & & \multicolumn{1}{|l|}{} & \\
-\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push d}} & & \multicolumn{1}{|l|}{} & \\ 
-\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{add}} & & \multicolumn{1}{|l|}{} &\\
-\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop e}} & & \multicolumn{1}{|l|}{} &\\
+\multicolumn{1}{|l|}{\texttt{load b}} & 3 & \multicolumn{1}{|l|}{\texttt{add a,b,c}} & 7 & \multicolumn{1}{|l|}{\texttt{push b}} & 3 &\multicolumn{1}{|l|}{\texttt{load r1, b}} & 4 \\ 
+\multicolumn{1}{|l|}{\texttt{add c}} & 3 &\multicolumn{1}{|l|}{\texttt{mult d,b,c}} & 7 & \multicolumn{1}{|l|}{\texttt{push c}} & 3 & \multicolumn{1}{|l|}{\texttt{load r2,c}} & 4 \\
+\multicolumn{1}{|l|}{\texttt{store a}} & 3 & \multicolumn{1}{|l|}{\texttt{add e,a,d}} & 7 & \multicolumn{1}{|l|}{\texttt{add}} & 1 & \multicolumn{1}{|l|}{\texttt{add r3, r1, r2}} & 3\\
+\multicolumn{1}{|l|}{\texttt{load b}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop a}} & 3 & \multicolumn{1}{|l|}{\texttt{store a, r3}} & 4\\
+\multicolumn{1}{|l|}{\texttt{mult c}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push b}} & 3 & \multicolumn{1}{|l|}{\texttt{mult r4, r1, r2}} & 3 \\
+\multicolumn{1}{|l|}{\texttt{store d}} & 3 & \multicolumn{1}{|l|}{} & &\multicolumn{1}{|l|}{\texttt{push c}} & 3 & \multicolumn{1}{|l|}{\texttt{store d, r4}} & 4\\ 
+\multicolumn{1}{|l|}{\texttt{load a}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{mult}} & 1 & \multicolumn{1}{|l|}{\texttt{add r5, r3, r4}} & 3 \\
+\multicolumn{1}{|l|}{\texttt{add d}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop d}} & 3 & \multicolumn{1}{|l|}{\texttt{store e, r5}} & 4\\
+\multicolumn{1}{|l|}{\texttt{store e}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push a}} & 3 & \multicolumn{1}{|l|}{} & \\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push d}} & 3 & \multicolumn{1}{|l|}{} & \\ 
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{add}} & 1 & \multicolumn{1}{|l|}{} &\\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop e}} & 3 & \multicolumn{1}{|l|}{} &\\
 \hline
- & \multicolumn{1}{|l|}{0} & & \multicolumn{1}{|l|}{0} & & \multicolumn{1}{|l|}{0} & & \multicolumn{1}{|l|}{0} \\
+ & \multicolumn{1}{|l|}{27} & & \multicolumn{1}{|l|}{21} & & \multicolumn{1}{|l|}{30} & & \multicolumn{1}{|l|}{29} \\
  \cline{2-2}\cline{4-4}\cline{6-6}\cline{8-8}
 \end{tabular}
-\section{}
+\subsubsection{} 
+How many bytes are transferred to / from memory? \\
+\begin{tabular}{l|ll|ll|ll|l|}
+\hline
+\multicolumn{2}{|l|}{accumulator machine} & \multicolumn{2}{|l|}{memory-memory machine} & \multicolumn{2}{|l|}{stack machine} & \multicolumn{2}{|l|}{load-store machine} \\ \hline
+\multicolumn{1}{|l|}{instruction} & transferred & \multicolumn{1}{|l|}{instruction} & transferred & \multicolumn{1}{|l|}{instruction} & transferred & \multicolumn{1}{|l|}{instruction} & transferred \\ \hline
+\multicolumn{1}{|l|}{\texttt{load b}} & 2 & \multicolumn{1}{|l|}{\texttt{add a,b,c}} & 6 & \multicolumn{1}{|l|}{\texttt{push b}} & 4 &\multicolumn{1}{|l|}{\texttt{load r1, b}} & 2 \\ 
+\multicolumn{1}{|l|}{\texttt{add c}} & 2 &\multicolumn{1}{|l|}{\texttt{mult d,b,c}} & 6 & \multicolumn{1}{|l|}{\texttt{push c}} & 4 & \multicolumn{1}{|l|}{\texttt{load r2, c}} & 2 \\
+\multicolumn{1}{|l|}{\texttt{store a}} & 2 & \multicolumn{1}{|l|}{\texttt{add e,a,d}} & 6 & \multicolumn{1}{|l|}{\texttt{add}} & 6 & \multicolumn{1}{|l|}{\texttt{add r3, r1, r2}} & 0\\
+\multicolumn{1}{|l|}{\texttt{load b}} & 2 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop a}} & 4 & \multicolumn{1}{|l|}{\texttt{store a, r3}} & 2\\
+\multicolumn{1}{|l|}{\texttt{mult c}} & 2 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push b}} & 4 & \multicolumn{1}{|l|}{\texttt{mult r4, r1, r2}} & 0 \\
+\multicolumn{1}{|l|}{\texttt{store d}} & 2 & \multicolumn{1}{|l|}{} & &\multicolumn{1}{|l|}{\texttt{push c}} & 4 & \multicolumn{1}{|l|}{\texttt{store d, r4}} & 2\\ 
+\multicolumn{1}{|l|}{\texttt{load a}} & 2 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{mult}} & 6 & \multicolumn{1}{|l|}{\texttt{add r5, r3, r4}} & 0 \\
+\multicolumn{1}{|l|}{\texttt{add d}} & 2 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop d}} & 4 & \multicolumn{1}{|l|}{\texttt{store e, r5}} & 2\\
+\multicolumn{1}{|l|}{\texttt{store e}} & 2 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push a}} & 4 & \multicolumn{1}{|l|}{} & \\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push d}} & 4 & \multicolumn{1}{|l|}{} & \\ 
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{add}} & 6 & \multicolumn{1}{|l|}{} &\\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop e}} & 4 & \multicolumn{1}{|l|}{} &\\
+\hline
+ & \multicolumn{1}{|l|}{18} & & \multicolumn{1}{|l|}{18} & & \multicolumn{1}{|l|}{54} & & \multicolumn{1}{|l|}{10} \\
+ \cline{2-2}\cline{4-4}\cline{6-6}\cline{8-8}
+\end{tabular}
+\subsubsection{}
+Which architecture is more efficient measured by code size?\\
+\textbf{The memory-memory machine}
+\subsubsection{}
+Which architecture is more efficient as measured by total memory traffic (code + data)?\\
+\textbf{The load-store machine}
+\subsection{}
+Repeat the above for a 64-bit machine 
 
+\subsubsection{}
+How many instruction bytes are fetched?\\
+\begin{tabular}{l|ll|ll|ll|l|}
+\hline
+\multicolumn{2}{|l|}{accumulator machine} & \multicolumn{2}{|l|}{memory-memory machine} & \multicolumn{2}{|l|}{stack machine} & \multicolumn{2}{|l|}{load-store machine} \\ \hline
+\multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size & \multicolumn{1}{|l|}{instruction} & size \\ \hline
+\multicolumn{1}{|l|}{\texttt{load b}} & 9 & \multicolumn{1}{|l|}{\texttt{add a,b,c}} & 25 & \multicolumn{1}{|l|}{\texttt{push b}} & 9 &\multicolumn{1}{|l|}{\texttt{load r1, b}} & 10 \\ 
+\multicolumn{1}{|l|}{\texttt{add c}} & 9 &\multicolumn{1}{|l|}{\texttt{mult d,b,c}} & 25 & \multicolumn{1}{|l|}{\texttt{push c}} & 9 & \multicolumn{1}{|l|}{\texttt{load r2,c}} & 10 \\
+\multicolumn{1}{|l|}{\texttt{store a}} & 9 & \multicolumn{1}{|l|}{\texttt{add e,a,d}} & 25 & \multicolumn{1}{|l|}{\texttt{add}} & 1 & \multicolumn{1}{|l|}{\texttt{add r3, r1, r2}} & 3\\
+\multicolumn{1}{|l|}{\texttt{load b}} & 9 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop a}} & 9 & \multicolumn{1}{|l|}{\texttt{store a, r3}} & 10\\
+\multicolumn{1}{|l|}{\texttt{mult c}} & 3 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push b}} & 9 & \multicolumn{1}{|l|}{\texttt{mult r4, r1, r2}} & 3 \\
+\multicolumn{1}{|l|}{\texttt{store d}} & 9 & \multicolumn{1}{|l|}{} & &\multicolumn{1}{|l|}{\texttt{push c}} & 9 & \multicolumn{1}{|l|}{\texttt{store d, r4}} & 10\\ 
+\multicolumn{1}{|l|}{\texttt{load a}} & 9 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{mult}} & 1 & \multicolumn{1}{|l|}{\texttt{add r5, r3, r4}} & 3 \\
+\multicolumn{1}{|l|}{\texttt{add d}} & 9 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop d}} & 9 & \multicolumn{1}{|l|}{\texttt{store e, r5}} & 10\\
+\multicolumn{1}{|l|}{\texttt{store e}} & 9 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push a}} & 9 & \multicolumn{1}{|l|}{} & \\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push d}} & 9 & \multicolumn{1}{|l|}{} & \\ 
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{add}} & 1 & \multicolumn{1}{|l|}{} &\\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop e}} & 9 & \multicolumn{1}{|l|}{} &\\
+\hline
+ & \multicolumn{1}{|l|}{75} & & \multicolumn{1}{|l|}{75} & & \multicolumn{1}{|l|}{84} & & \multicolumn{1}{|l|}{59} \\
+ \cline{2-2}\cline{4-4}\cline{6-6}\cline{8-8}
+\end{tabular}
+\subsubsection{} 
+How many bytes are transferred to / from memory?\\
+\begin{tabular}{l|ll|ll|ll|l|}
+\hline
+\multicolumn{2}{|l|}{accumulator machine} & \multicolumn{2}{|l|}{memory-memory machine} & \multicolumn{2}{|l|}{stack machine} & \multicolumn{2}{|l|}{load-store machine} \\ \hline
+\multicolumn{1}{|l|}{instruction} & transferred & \multicolumn{1}{|l|}{instruction} & transferred & \multicolumn{1}{|l|}{instruction} & transferred & \multicolumn{1}{|l|}{instruction} & transferred \\ \hline
+\multicolumn{1}{|l|}{\texttt{load b}} & 8 & \multicolumn{1}{|l|}{\texttt{add a,b,c}} & 24 & \multicolumn{1}{|l|}{\texttt{push b}} & 16 &\multicolumn{1}{|l|}{\texttt{load r1, b}} & 8 \\ 
+\multicolumn{1}{|l|}{\texttt{add c}} & 8 &\multicolumn{1}{|l|}{\texttt{mult d,b,c}} & 24 & \multicolumn{1}{|l|}{\texttt{push c}} & 16 & \multicolumn{1}{|l|}{\texttt{load r2, c}} & 8 \\
+\multicolumn{1}{|l|}{\texttt{store a}} & 8 & \multicolumn{1}{|l|}{\texttt{add e,a,d}} & 24 & \multicolumn{1}{|l|}{\texttt{add}} & 24 & \multicolumn{1}{|l|}{\texttt{add r3, r1, r2}} & 0\\
+\multicolumn{1}{|l|}{\texttt{load b}} & 8 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop a}} & 16 & \multicolumn{1}{|l|}{\texttt{store a, r3}} & 8\\
+\multicolumn{1}{|l|}{\texttt{mult c}} & 8 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push b}} & 16 & \multicolumn{1}{|l|}{\texttt{mult r4, r1, r2}} & 0 \\
+\multicolumn{1}{|l|}{\texttt{store d}} & 8 & \multicolumn{1}{|l|}{} & &\multicolumn{1}{|l|}{\texttt{push c}} & 16 & \multicolumn{1}{|l|}{\texttt{store d, r4}} & 2\\ 
+\multicolumn{1}{|l|}{\texttt{load a}} & 2 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{mult}} & 24 & \multicolumn{1}{|l|}{\texttt{add r5, r3, r4}} & 0 \\
+\multicolumn{1}{|l|}{\texttt{add d}} & 8 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop d}} & 16 & \multicolumn{1}{|l|}{\texttt{store e, r5}} & 8\\
+\multicolumn{1}{|l|}{\texttt{store e}} & 8 & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push a}} & 16 & \multicolumn{1}{|l|}{} & \\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{push d}} & 16 & \multicolumn{1}{|l|}{} & \\ 
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{add}} & 24 & \multicolumn{1}{|l|}{} &\\
+\multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{} & & \multicolumn{1}{|l|}{\texttt{pop e}} & 16 & \multicolumn{1}{|l|}{} &\\
+\hline
+ & \multicolumn{1}{|l|}{66} & & \multicolumn{1}{|l|}{72} & & \multicolumn{1}{|l|}{216} & & \multicolumn{1}{|l|}{32} \\
+ \cline{2-2}\cline{4-4}\cline{6-6}\cline{8-8}
+\end{tabular}
+\subsection{}
+What do these results indicate about the design of an instruction set for n-bit processors where n is 32, 64 or perhaps in the future, even greater? Explain. (Note: n is the size in bits of an integer on the machine, the registers, and the memory addresses.)\\
+\textbf{The load-store machine architecture scales the best in both instruction size, as well as in total transfer of data during runtime. In the accumulator, memory-memory, and stack machines, encoding the larger address in each instruction proves to be costly. In addition, at runtime, having to move data  to/from memory becomes more costly with a larger address size. }
+\section{}
+Problem A.8 in the text book\\
+\subsection{}
+    Consider the case of a processor with an instruction length of 12 bits and 32 general purpose registers so the size of the address field is 5 bits. Is it possible to have instruction encodings for the following?
+    \begin{itemize}
+        \item 3 two-address instructions
+        \item 30 one-address instructions
+        \item 45 zero-address instructions
+    \end{itemize}
+    \vspace{5mm}
+
+    \textbf{Yes this is possible. Encode the addresses as follows:} \\
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+    \hline
+    \multicolumn{12}{|l|}{Two Address Instructions}\\
+    \hline
+    0 & 0 & \multicolumn{5}{|l|}{R1 Value} & \multicolumn{5}{|l|}{R2 Value} \\
+    0 & 1 & \multicolumn{5}{|l|}{R1 Value} & \multicolumn{5}{|l|}{R2 Value} \\
+    1 & 0 & \multicolumn{5}{|l|}{R1 Value} & \multicolumn{5}{|l|}{R2 Value}\\
+    \hline
+    \multicolumn{12}{|l|}{One Address Instructions}\\
+    \hline
+    1 & 1 & 0 & 0 & 0 & 0 & 0 & \multicolumn{5}{|l|}{R1 Value}\\
+    1 & 1 & 1 & 1 & 1 & 0 & 1 & \multicolumn{5}{|l|}{R1 Value}\\
+    \end{tabular}
+%    \textbf{Two Address Instructions}\\
+%    \textbf{One Address Instructions}\\ 
+%    11 00000 \{R1 Value\}\\
+%    ...\\
+%    11 11101 \{R1 Value\}\\
+%    \textbf{Zero Address Instructions}\\
+%    11 1111 000000\\
+%    ...\\
+%    11 1111 101100
+\subsection{}
+Assuing the same instruction length and address field sizes as above, determine if it is possible to have:
+\begin{itemize}
+    \item 3 two-address instructions
+    \item 31 one-address instructions
+    \item 35 zero-address instructions
+\end{itemize}
+\vspace{5mm}
+\textbf{This is not possible. In the scheme described above, the value 0x111111 in the first 6 bits needs to be reserved for the zero address instructions to maintain 6 bits of opcode space. If the number of one address instructions needs to be greater than 30, we will need one extra bit.}
 \end{document}
