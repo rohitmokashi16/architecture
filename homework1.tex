@@ -3,8 +3,10 @@
 \usepackage{geometry}
 \usepackage{multirow}
 \usepackage{sectsty}
+\usepackage{lipsum}
+\usepackage{multicol}
+\usepackage{tabularx}
 \renewcommand{\thesubsection}{\Alph{subsection}}
-
 \geometry{
     a4paper,
     left=20mm,
@@ -15,12 +17,12 @@
 \usepackage{listings}
 
 
-\title{Architecture Homework 1}
+\title{Architecture Problem Set 1}
 \author{Taylor King }
 \date{January 2016}
 \sectionfont{\Large} 
 \subsectionfont{\large}
-
+\setlength{\columnsep}{0pt}
 \begin{document}
 
 \maketitle
@@ -45,10 +47,11 @@ Using the addressing modes below, build a table that contains the following colu
 \end{tabular}
 \vspace{5mm}
 \section{} 
-For what reason(s) are some of the addressing modes above excluded from the DLX instruction set?
-\vspace{10mm}
-The Indexed and Scaled Indexed addressing modes are removed in order to make it simpler to handle data dependences. The Register Indirect addressing mode is removed because it both requires 2 memory accesses and can be affected by data dependencies. Absolute addressing was removed to keep the convention of $Base + Displacement$ You can simulate addressing by using an offset of R0
+For what reason(s) are some of the addressing modes above excluded from the DLX instruction set?\\
+\vspace{5mm}
 
+The Indexed and Scaled Indexed addressing modes are removed in order to make it simpler to handle data dependences. The Register Indirect addressing mode is removed because it both requires 2 memory accesses and can be affected by data dependencies. Absolute addressing was removed to keep the convention of $Base + Displacement$ You can simulate addressing by using an offset of R0
+\pagebreak
 \section{} 
 Using the picture below of a byte addressable memory initialized to 0:
 \vspace{5mm}
@@ -63,7 +66,6 @@ double word & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
 \end{tabular}
 \vspace{10mm}
 
-\pagebreak
 \subsection{}
 Assume we have a variable in memory declared and initialized as follows: 
 \texttt{long int i = 0x123456789abcdef0; } 
@@ -78,6 +80,7 @@ Draw enough of the memory to show what it would look like if i is stored in doub
 \multicolumn{1}{|l|}{1} & 0xf0 & 0xde & 0xbc & 0x9a & 0x78 & 0x56 & 0x34 & 0x12 \\ \hline
 \multicolumn{1}{|l|}{2} & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 & 0x00 \\ \hline
 \end{tabular}
+
 \subsection{}
 What would be the address of i? 
 \vspace{5mm}
@@ -105,7 +108,7 @@ What would be the address of i?
 
 \textbf{0x08}
 \vspace{5mm}
-
+\pagebreak
 \subsection{}
 What are the addresses and the hexadecimal values of all misaligned 2-byte words that can be read from the given 64-bit double word when stored in Little Endian byte order? Only show the addresses and values of 2-byte words that are completely within the 64-bit double word.
 \vspace{5mm}
@@ -276,6 +279,8 @@ How many bytes are transferred to / from memory?\\
 \subsection{}
 What do these results indicate about the design of an instruction set for n-bit processors where n is 32, 64 or perhaps in the future, even greater? Explain. (Note: n is the size in bits of an integer on the machine, the registers, and the memory addresses.)\\
 \textbf{The load-store machine architecture scales the best in both instruction size, as well as in total transfer of data during runtime. In the accumulator, memory-memory, and stack machines, encoding the larger address in each instruction proves to be costly. In addition, at runtime, having to move data  to/from memory becomes more costly with a larger address size. }
+\vspace{1cm}
+\pagebreak
 \section{}
 Problem A.8 in the text book\\
 \subsection{}
@@ -288,7 +293,9 @@ Problem A.8 in the text book\\
     \vspace{5mm}
 
     \textbf{Yes this is possible. Encode the addresses as follows:} \\
-    \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+    \vspace{5mm}
+    
+    \begin{tabular}{|l|l||l|l|l|l|l||l|l|l|l|l|}
     \hline
     \multicolumn{12}{|l|}{Two Address Instructions}\\
     \hline
@@ -300,6 +307,12 @@ Problem A.8 in the text book\\
     \hline
     1 & 1 & 0 & 0 & 0 & 0 & 0 & \multicolumn{5}{|l|}{R1 Value}\\
     1 & 1 & 1 & 1 & 1 & 0 & 1 & \multicolumn{5}{|l|}{R1 Value}\\
+    \hline
+    \multicolumn{12}{|l|}{Zero Address Instructions}\\ 
+    \hline
+    1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+    1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 1 & 0 & 0\\
+    \hline
     \end{tabular}
 %    \textbf{Two Address Instructions}\\
 %    \textbf{One Address Instructions}\\ 
@@ -310,6 +323,7 @@ Problem A.8 in the text book\\
 %    11 1111 000000\\
 %    ...\\
 %    11 1111 101100
+
 \subsection{}
 Assuing the same instruction length and address field sizes as above, determine if it is possible to have:
 \begin{itemize}
@@ -318,5 +332,151 @@ Assuing the same instruction length and address field sizes as above, determine 
     \item 35 zero-address instructions
 \end{itemize}
 \vspace{5mm}
-\textbf{This is not possible. In the scheme described above, the value 0x111111 in the first 6 bits needs to be reserved for the zero address instructions to maintain 6 bits of opcode space. If the number of one address instructions needs to be greater than 30, we will need one extra bit.}
+\textbf{This is not possible. In the scheme described above, the value 0x111111 in the first 6 bits needs to be reserved for the zero address instructions to maintain 6 bits of opcode space. If the number of one address instructions needs to be greater than 30, we will need one extra bit.}\\
+\subsection{}
+Assume the same instruction length and address field size s as above. Further assume there are already 3 two-address instructions and 24 zero-address instructions. What is the maximum number of one-address instructions that can be encoded for this processor?\\
+\vspace{5mm}
+
+\begin{tabular}{l}
+$2^{12}=4096$ \\
+$4096-(3\times2^{5}\times2^{5})=1024$\\
+$1024-24=1000$\\
+$n\times2^{5}=1000$\\
+$n=15$
+\end{tabular}
+\vspace{1cm}
+\pagebreak
+\section{}
+We are designing instruction set formats for a load-store architecture and are trying to decide whether it is worthwhile to have multiple offset lengths for branches and memory references. The length of an instruction would be equal to $16\ bits+\mathnormal{offset}\ length$ in bits, so ALU instructions will be 16 bits. Figure A.31 Contains data on offset size for the Alpha architecture with full optimization for SPEC CPU2000. For instruction set frequencies, use the data for MIPS from the average of the five benchmarks for the load-store machine in Figure A.27. Assume the miscellaneous instructions are all ALU instructions that only use registers.\\
+
+\begin{multicols}{2}
+\begin{minipage}{\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+Instruction & Integer Average\\
+\hline
+load & 26\%\\
+store & 10\%\\
+add & 19\%\\
+sub & 3\%\\
+mul & 0\%\\
+compare & 5\%\\
+load imm & 2\%\\
+cond branch & 12\%\\
+cond move & 1\%\\
+jump & 1\%\\
+call & 1\%\\
+return & 1\%\\
+shift & 2\%\\
+AND & 4\%\\
+OR & 9\%\\
+XOR & 3\%\\
+\hline
+\end{tabular}\par
+\bigskip
+\textit{Figure A.27}
+\end{minipage}
+\vfill
+
+\columnbreak
+\begin{minipage}{\linewidth}
+\begin{tabular}{|l|l|l|}
+\hline
+Offset Bits & Data References & Branches\\
+\hline
+0 & 30.4\% & 0.1\%\\
+1 & 33.5\% & 2.8\%\\
+2 & 35.0\% & 10.5\%\\
+3 & 40.0\% & 22.9\%\\
+4 & 47.3\% & 36.5\%\\
+5 & 54.5\% & 57.4\%\\
+6 & 60.4\% & 72.4\%\\
+7 & 66.9\% & 85.2\%\\
+8 & 71.6\% & 90.5\%\\
+9 & 73.3\% & 93.1\%\\
+10 & 74.2\% & 95.1\%\\
+11 & 74.9\% & 96.0\%\\
+12 & 76.6\% & 96.8\%\\
+13 & 87.9\% & 97.4\%\\
+14 & 91.9\% & 98.1\%\\
+15 & 100\% & 98.5\%\\
+16 & 100\% & 99.5\%\\
+17 & 100\% & 99.8\%\\
+18 & 100\% & 99.9\%\\
+19 & 100\% & 100\%\\
+20 & 100\% & 100\%\\
+21 & 100\% & 100\%\\
+\hline
+\end{tabular}\par
+\bigskip
+\textit{Figure A.31}
+\end{minipage}
+\end{multicols} 
+\subsection{}
+Suppose offsets are permitted to 0, 8, 16, or 24 bits in length including the sign bit. What is the average length of an executed instruction? \\
+
+\begin{multicols}{3}
+\begin{minipage}{\linewidth}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{References}\\
+\hline
+Size & Usage \\
+\hline
+0 & 30.4\%\\
+8 & 41.2\%\\
+16 & 28.4\%\\
+24 & 0 \%\\
+\hline
+\end{tabular}\par
+\bigskip
+$Size_{avg}=12.70$\\
+
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{Branches}\\
+\hline
+Size & Usage \\
+\hline
+0 & 0.1\%\\
+8 & 90.4\%\\
+16 & 9.0\%\\
+24 & 0.5\%\\
+\hline
+\end{tabular}\par
+\bigskip
+$Size_{avg}=8.81$\\
+\end{minipage}
+\vfill
+\columnbreak
+\begin{minipage}{\linewidth}
+\begin{tabular}{|l|l|l|l|}
+\hline
+Instruction & Average Size & Occurrence & Weighted Average \\
+\hline
+load & 12.70 & 26\% &  3.30\\
+store & 12.70 & 10\% & 1.27  \\
+add & 16 & 19\% & 3.04\\
+sub & 16 & 3\% & .48\\
+mul & 16 & 0\% & 0 \\
+compare & 16 & 5\% & .8\\
+load imm & 16 & 2\% & .32\\
+cond branch & 8.81 & 12\% & 1.06\\
+cond move & 16 & 1\% & .16\\
+jump & 8.81 & 1\% & .09\\ 
+call & 8.81 & 1\% & .09\\
+return & 8.81 & 1\% & .09\\
+shift & 16 & 2\% & .32 \\
+AND & 16 & 4\% & .64 \\
+OR & 16 & 9\% & 1.44\\
+XOR & 16 & 3\% & .48\\
+\hline
+\end{tabular}\par
+\bigskip
+$Size_{avg}=13.58\rightarrow14\ bits$
+\end{minipage}
+\end{multicols}
+\subsection{}
+Suppose we want a fixed-length instruction and we chose a 24 bit instruction length (for everything, including ALU instructions). For every offset of longer than 8 bits, additional instructions are required. Determine the number of instruction bytes fetched in this machine with fixed instruction size verus those fetched with a byte-variable-sized instruction as defined in part(a).\\
+\vspace{5mm}
 \end{document}
