@@ -26,7 +26,7 @@
       (defn matchType[line] 
         (if (re-matches #"(addi|subi)\ " line) "directive" "error")
       )
-      (println getrex)
+      (println (assembler.opcodes/getrex))
     )
   )
 )

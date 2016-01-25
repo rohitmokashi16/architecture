@@ -1,6 +1,4 @@
 (ns assembler.opcodes)
-
-(defn getrex[]
   (def defs {
                 :SPECIAL 0
                 :FPARITH 1
@@ -41,5 +39,7 @@
                 :SF 46
                 :SD 47
   })
-  (clojure.string/join "(" [(reduce (fn[acc, x] (clojure.string/join "|" [x acc])) (map (fn[x] (name x)) (keys defs)))])
+(defn getrex[]
+  (clojure.string/join ")" [(clojure.string/join "(" ["" (reduce (fn[acc, x] (clojure.string/join "|" [x acc])) (map (fn[x] (name x)) (keys assembler.opcodes/defs)))]) ""])
+ 
 )
