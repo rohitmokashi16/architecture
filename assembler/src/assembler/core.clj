@@ -1,4 +1,4 @@
-(ns assembler.core (:use clojure.core.match) (:use assembler.opcodes))
+(ns assembler.core (:use clojure.string) (:use clojure.core.match) (:use assembler.opcodes))
 
 (defn -main[& x]
   (if (zero? (count x)) (do 
@@ -19,14 +19,19 @@
         )
         (strip line)  
       ) 
-      (defn itype[line] )
-      (defn rtype[line] )
-      (defn jtype[line] )
-      (defn directive[line] )
+
+      (defn writeout[x]) 
       (defn matchType[line] 
-        (if (re-matches #"(addi|subi)\ " line) "directive" "error")
+         (def directivepattern (re-pattern "\\..*"))
+         (def itypepattern (re-pattern (join "" [(getrex (itypeopcodes)) ".*"])))
+         (cond  
+            (re-matches directivepattern line) "directive" 
+            (re-matches itypepattern line) "itype"
+            :else "other" 
+        ) 
       )
-      (println (assembler.opcodes/getrex))
+      (println (getrex (itypeopcodes)))
+      (println (map (fn[line] (matchType line)) lines))
     )
   )
 )

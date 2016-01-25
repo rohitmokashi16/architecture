@@ -1,5 +1,5 @@
-(ns assembler.opcodes)
-  (def defs {
+(ns assembler.opcodes (:use clojure.string))
+  (def opdefs {
                 :SPECIAL 0
                 :FPARITH 1
                 :J 2 
@@ -39,7 +39,32 @@
                 :SF 46
                 :SD 47
   })
-(defn getrex[]
-  (clojure.string/join ")" [(clojure.string/join "(" ["" (reduce (fn[acc, x] (clojure.string/join "|" [x acc])) (map (fn[x] (name x)) (keys assembler.opcodes/defs)))]) ""])
- 
+(def fundefs {
+      :SLLI 0
+      :SRLI 2
+      :SRAI 3
+      :SLL 4
+      :SRL 6
+      :SRA 7
+      :TRAP 12
+      :ADD 20
+      :ADDU 21
+      :SUB 22
+      :SUBU 23
+      :AND 24
+      :OR 25
+      :XOR 26
+      :SEQ 28
+      :SNE 29
+      :SLT 30
+      :SGT 31
+      :SLE 32
+      :SGE 33
+})
+(defn itypeopcodes[] 
+  [ :ADDI :ADDUI :SUBI :SUBUI :ANDI :ORI :XORI :SGTI :SLTI :SGEI :SEQI :SNEI ]
+)
+
+(defn getrex[p]
+  (join "" ["(" (reduce (fn[acc, x] (join "|" [(lower-case x) (lower-case acc)])) (map (fn[x] (name x)) p)) ")"])
 )
