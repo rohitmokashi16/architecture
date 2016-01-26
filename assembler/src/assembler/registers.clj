@@ -23,6 +23,6 @@
   :R20 20
   }
 ) 
-(defn getrex[] 
+(defn matchAllRegisters[] 
 (clojure.string/join ")" [(clojure.string/join "(" ["" (reduce (fn[acc, x] (clojure.string/join "|" [(clojure.string/lower-case x) acc])) (map (fn[x] (name x)) (keys assembler.registers/gprdefs)))]) ""])
 )

@@ -65,6 +65,6 @@
   [ :ADDI :ADDUI :SUBI :SUBUI :ANDI :ORI :XORI :SGTI :SLTI :SGEI :SEQI :SNEI ]
 )
 
-(defn getrex[p]
+(defn matchOpcodes[p]
   (join "" ["(" (reduce (fn[acc, x] (join "|" [(lower-case x) (lower-case acc)])) (map (fn[x] (name x)) p)) ")"])
 )
