@@ -1,8 +1,8 @@
 (ns assembler.opcodes (:use clojure.string))
-  (def opdefs {
+  (def opcodes {
                 :SPECIAL 0
                 :FPARITH 1
-                :J 2 
+                :J 2
                 :JAL 3
                 :BEQZ 4
                 :BNEZ 5
@@ -20,7 +20,7 @@
                 :TRAP 17
                 :JR 18
                 :JALR 19
-                :SEQI 24
+               :SEQI 24
                 :SNEI 25
                 :SLTI 26
                 :SGTI 27
@@ -39,7 +39,7 @@
                 :SF 46
                 :SD 47
   })
-(def fundefs {
+(def funcodes {
       :SLLI 0
       :SRLI 2
       :SRAI 3
@@ -61,10 +61,12 @@
       :SLE 32
       :SGE 33
 })
-(defn itypeopcodes[] 
+(defn itypeopcodes[]
   [ :ADDI :ADDUI :SUBI :SUBUI :ANDI :ORI :XORI :SGTI :SLTI :SGEI :SEQI :SNEI ]
 )
+(defn rtypeopcodes[]
 
+)
 (defn matchOpcodes[p]
   (join "" ["(" (reduce (fn[acc, x] (join "|" [(lower-case x) (lower-case acc)])) (map (fn[x] (name x)) p)) ")"])
 )
