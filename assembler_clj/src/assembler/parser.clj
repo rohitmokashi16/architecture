@@ -2,7 +2,7 @@
 
 (def patterns {
     :text (re-pattern "^\\.text?(\\ \\d+)")
-    :data (re-pattern "^\\.data?(\\ \\d+)")
+    :data (re-pattern "^\\.data(\\ (0x)?\\d+)?")
     :align (re-pattern "^\\.align\\ \\d+")
     :asciiz (re-pattern "(.*\\ )?\\.asciiz\\ \".*\"(,\\ \".*\")*")
     :float (re-pattern "(.*:\\ )?\\.float\\ \\d+(,\\ -?\\d+)*")
@@ -29,7 +29,8 @@
           )
         )
         (re-matches (patterns :data) txt) (do
-          (let [n (re-find (re-pattern "\\d+"))]
+          (println "match data")
+          (let [n (re-find (re-pattern "(0x)?\\d+"))]
             (if (nil? n) (pass1 (+ 1 line) contents (h2d "0x200")) (pass1 (+ 1 line) contents n))                          
           )
         )
@@ -47,8 +48,8 @@
                   (recur c (+ 1 y) nums (assoc result (+ memLocation (* 8 y)) (get nums y)))
                 )
               )
-               (count numbers)
-               0 
+              (count numbers)
+              0 
               numbers 
               (pass1 (+ 1 line) contents (+ (* 8 (count numbers)) memLocation))
             )
@@ -63,12 +64,12 @@
           (assoc (pass1 (+ 1 line) contents (+ 4 memLocation)) memLocation 
                  (first 
                     (re-find 
-                      (re-pattern (clojure.string/join [(matchOpcodes (keys opcodes)) ".*"]) 
+                       (re-pattern (clojure.string/join [(matchOpcodes (keys opcodes)) ".*"]) 
                                   ) txt))
-                 )
-                                                   )
+                          )
+        )
         :else (pass1 (+ 1 line) contents memLocation) 
-          )
+        )
         )
       )       
     )
