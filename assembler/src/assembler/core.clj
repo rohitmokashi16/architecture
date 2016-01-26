@@ -22,32 +22,6 @@
 
       (defn writeout[x]) 
       ;this function figures out where exectly the directive wants to put the contents
-      (defn currentMemoryLocation[lines, line]
-        (reduce (fn[acc, l] 
-            (if (<= (indexOf l) (indexOf line)
-              (do 
-                ;match a bunch of things
-                (def textDirective (re-pattern "^\\.text?(\\ \d+)"))
-                (def 
-                (cond 
-                  (re-matches textDirective l) (do
-                    (re-find (re-pattern "\d+"))
-                          
-                  )
-                  (re-matches dataDirective l) (do
-                     
-                  )
-                )
-              )
-            )
-          )
-        )
-        0
-        lines
-      )
-    )
-      
-      
       (defn buildSymbolTable[lines] 
 
 
