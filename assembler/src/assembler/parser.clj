@@ -39,9 +39,19 @@
           )
         )
         (re-matches (patterns :word) txt) (do 
-          (let [numbers (first (re-find (re-pattern "\\ -?\\d+(,\\ -?\\d+)*")))]
+          (let [numbers (clojure.string/split (first (re-find (re-pattern "\\ -?\\d+(,\\ -?\\d+)*") txt)) #",")]
       ;   (def result (pass1 (+ 1 line) contents (+ (* 8 (count words)) memLocation)))
-           (pass1 (+ 1 line) contents memLocation)
+            ((fn[c, y,nums, result] 
+               (if (= y c)
+                  result
+                  (recur c (+ 1 y) nums (assoc result (+ memLocation (* 8 y)) (get nums y)))
+                )
+              )
+               (count numbers)
+               0 
+              numbers 
+              (pass1 (+ 1 line) contents (+ (* 8 (count numbers)) memLocation))
+            )
           )
         ) 
         (re-matches (patterns :space) txt) (do
