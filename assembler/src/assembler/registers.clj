@@ -1,5 +1,5 @@
 (ns assembler.registers)
-(def gprdefs {
+(def gpregs {
   :R0 0
   :R1 1
   :R2 2
@@ -21,8 +21,19 @@
   :R18 18
   :R19 19
   :R20 20
+  :R21 21
+  :R22 22
+  :R23 23
+  :R24 24
+  :R25 25 
+  :R26 26
+  :R27 27
+  :R28 28
+  :R29 29
+  :R30 30
+  :R31 31
   }
 ) 
 (defn matchAllRegisters[] 
-(clojure.string/join ")" [(clojure.string/join "(" ["" (reduce (fn[acc, x] (clojure.string/join "|" [(clojure.string/lower-case x) acc])) (map (fn[x] (name x)) (keys assembler.registers/gprdefs)))]) ""])
+(clojure.string/join ")" [(clojure.string/join "(" ["" (reduce (fn[acc, x] (clojure.string/join "|" [(clojure.string/lower-case x) acc])) (map (fn[x] (name x)) (keys assembler.registers/gpregs)))]) ""])
 )
