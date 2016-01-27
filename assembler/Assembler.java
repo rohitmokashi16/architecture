@@ -11,7 +11,7 @@ public class Assembler {
     
   }
   
-  public int hex2dec(String hex, int size)
+  	public int hex2dec(String hex, int size)
 	{
 		int x = 0;
 		int j = 0;
