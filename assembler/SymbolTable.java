@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 
 public class SymbolTable {
-  
+
   private HashMap<String, Integer> map;
   private static SymbolTable instance;
   
@@ -21,9 +21,9 @@ public class SymbolTable {
   }
 
   public void readFile(String filename) {
-  
+      
   }
-
+  
   public int lookupSymbol(String symbolName) {
     return map.get(symbolName);
   }
