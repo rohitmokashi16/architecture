@@ -4,12 +4,13 @@ import java.util.regex.*;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
-public class Assembler {
+public class Assembler 
+{
   
-  public static void main(String[] args) 
-  {
+ 	public static void main(String[] args) 
+	{
     
-  }
+	}
   
   	public int hex2dec(String hex, int size)
 	{
