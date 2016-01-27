@@ -6,10 +6,15 @@ import java.io.BufferedReader;
 
 public class Assembler 
 {
-
+  
  	public static void main(String[] args) 
 	{
-    
+    	String fileName = args[0];
+    	if (!(fileName).endsWith(".dlx"))
+    	{
+    		System.out.println("Invalid File Name");
+    		System.exit(0);
+    	}
 	}
   
   	public int hex2dec(String hex, int size)
