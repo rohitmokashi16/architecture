@@ -1,0 +1,402 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{multirow}
+\usepackage{sectsty}
+\usepackage{lipsum}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{enumitem}
+
+\lstset{escapechar=;,style=customasm}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection\ \Alph{subsection}}
+\geometry{
+    a4paper,
+    left=20mm,
+    top=20mm,
+    bottom=20mm,
+    right=20mm
+}
+
+\setlength{\columnsep}{0cm}
+
+\title{Architecture Problem Set 3}
+\author{Taylor King }
+\date{February 2016}
+\sectionfont{\Large} 
+\subsectionfont{\large}
+\usepackage{changepage}
+\begin{document}
+\maketitle
+\section{}
+Consider the following code fragment: 
+
+\begin{lstlisting}
+Loop: LD R1, 0(R2)
+DADDI R1, R1, #1
+SD 0(R2), R1
+DADDI R2, R2, #4 
+DSUB R4, R3, R2
+BNEZ R4, Loop
+\end{lstlisting}
+\begin{adjustwidth}{2.5em}{0pt}
+\subsection{}
+Show the timing diagram for one iteration of this instruction sequence assuming the classic five stage pipeline (F, D, X, M, W) without any forwarding hardware but assuming "forwarding" through the register file. Assuming that branches are 1) predicted as not-taken and 2) resolved in the M stage, how many cycles does this loop (all iterations) take to execute?  What is the CPI? Assume the above loop is executed 1000 times.
+
+\vspace{5mm}
+\begin{tabular}{|p{3cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|}
+\hline
+\textbf{Instruction} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\texttt{LD R1, 0(R2)} & F & D & X & M & W & & & & & & & & & &   \\
+\texttt{DADDI R1, R1, \#1}&  & F & D & D & D & X& M& W& & & & & & &  \\
+\texttt{SD 0(R2), R1} & &  &  & &  F& D& D& D& X& M& W& & & &  \\
+\texttt{DADDI R2, R2, \#4} & & & & & & & & F& D& X& M& W& & &\\
+\texttt{DSUB R4, R3, R2} & & & & & & & & & F& D& D& D& X& M& W \\
+\hline
+\end{tabular}
+
+\vspace{5mm}
+\begin{tabular}{|p{3cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|}
+\hline
+\textbf{Instruction} &\textbf{11}&\textbf{12}&\textbf{13}&\textbf{14}& \textbf{15} & \textbf{16} & \textbf{17} & \textbf{18} & \textbf{19}&\textbf{20}&\textbf{21}&\textbf{22}&\textbf{23}&\textbf{24}&\textbf{25}\\
+\hline
+	\texttt{DSUB R4, R3, R2} & D & D & X & M & W & & & & & & & & & &   \\
+\texttt{BNEZ R4, Loop} & & F& D& D& D& X& M& W& & & & & & & \\
+\hline
+\multicolumn{16}{|c|}{\textbf{Branch Taken}}\\
+\hline
+Instruction 7 & & & & & F & D& D& & & & & & & &\\
+\textbf{\texttt{LD R1, 0(R2)}} & & & & & & & & F& D & X& M& W& & &\\
+\hline
+\multicolumn{16}{|c|}{\textbf{Branch Not Taken}}\\
+\hline
+Instruction 7  & & & & & F& D& D& X& M& W& & & & & \\
+\hline
+\end{tabular}
+
+\vspace{5mm}
+\textbf{It takes 17 cycles to complete one iteration of the loop and begin to fetch the first instruction in the next iteration. Therefore, it will take 17,000 cycles to complete one thousand iterations.}
+
+
+\vspace{3mm}
+$CPI=\frac{17\ cycles}{6\ instructions}=\textbf{2.83}$
+\subsection{} 
+Show the timing diagram for this code fragment assuming forwarding hardware. Assuming branches are predicted as not-taken and resolved in the D stage, how many cycles does this loop take to execute? What is the CPI?
+
+\vspace{5mm}
+\begin{tabular}{|p{3cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|}
+\hline
+\textbf{Instruction} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\texttt{LD R1, 0(R2)} & F & D & X & M & W & & & & & & & & & &   \\
+\texttt{DADDI R1, R1, \#1}&  & F & D & D & X & M& W& & & & & & & &  \\
+\texttt{SD 0(R2), R1} & &  &  & F&  D& X& M& W& & & & & & &  \\
+\texttt{DADDI R2, R2, \#4} & & & & & F& D& X& M& W& & & & & &\\
+\texttt{DSUB R4, R3, R2} & & & & & & F & D& X& M& W& & & & & \\
+\texttt{BNEZ R4, Loop} & & & & & & & F& D& X& M& W& & & & \\
+
+\hline
+\multicolumn{16}{|c|}{\textbf{Branch Taken}}\\
+\hline
+Instruction 7 & & & & & & & & F & & & & & & & \\
+\texttt{LD R1, 0(R2)} & & & & & & & & & F& D& X& M& W& & \\
+\hline
+\multicolumn{16}{|c|}{\textbf{Branch Not Taken}}\\
+\hline
+Instruction 7 & & & & & & & & F & D& X& M& W& & & \\
+\hline
+\end{tabular}
+
+\vspace{3mm}
+\textbf{It takes 8 cycles to finish one iteration of this loop, Therefore it will take 8,000 cycles to complete one thousand iterations of the loop}
+
+\vspace{3mm}
+$CPI=\frac{8\ cycles}{6\ instructions}=\textbf{1.24}$
+
+
+\subsection{}
+Now, assume the branch is a delayed branch and the branch is resolved in the D stage. Also assume hardware forwarding. Reorder the instructions in the loop and schedule an instruction in the delay slot so that the loop executes with as few stalls as possible. You may also change operands, but do not change or eliminate any opcodes. Show the timing diagram for your scheduled loop. How many cycles does this loop take to execute? What is the CPI?
+
+\vspace{5mm}
+\begin{tabular}{|p{3cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|}
+\hline
+\textbf{Instruction} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} & \textbf{13} & \textbf{14} & \textbf{15}\\
+\hline
+\texttt{LD R1, 0(R2)} & F & D & X & M & W & & & & & & & & & &   \\
+\texttt{DADDI R2, R2, \#4} & & F& D& X& M& W& & & & & & & & & \\
+\texttt{DADDI R1, R1, \#1}& & & F & D & X & M& W& & & & & & & &  \\
+\texttt{DSUB R4, R3, R2} & & & & F & D& X& M& W& & & & & & &\\
+\texttt{BNEZ R4, Loop} & & & & & F& D& X& M& W& & & & & &\\
+
+\hline
+\multicolumn{16}{|c|}{\textbf{Branch Taken}}\\
+\hline
+\texttt{SD -4(R2), R1} & & & & &  & F&  D& X& M& W& & & & &  \\
+\texttt{LD R1, 0(R2)} & & & & & & & F& D& X& M& W& & & &\\
+\hline
+\multicolumn{16}{|c|}{\textbf{Branch Not Taken}}\\
+\hline
+\texttt{SD -4(R2), R1} & & & & &  & F&  D& X& M& W& & & & &  \\
+Instruction 7 & & & & & & & F & D& X& M& W& & & & \\
+\hline
+\end{tabular}
+
+\vspace{5mm}
+\textbf{If we can adjust the offset of the store on register 2, we can perform the add on r2 to stall for time while we wait for the value in register 1 from memory. In addition, we can do a delayed branch and begin the store while we wait to resolve the branch. With these two improvements we reduce the number of stalls from 2 to 0, and the cycles per iteration from 8 to 6.}
+
+$CPI=\frac{6\ Cycles}{6\ Instructions}=\textbf{1}$
+
+\end{adjustwidth}
+ 
+\section{}
+In this problem, we will explore how deepening the pipeline affects performance in two ways: faster clock cycle and increased stalls due to data and control hazards. Assume that the original machine is a 5-stage pipeline with a 1-ns clock cycle. The second machine is a 12-stage pipeline with a .6 ns clock cycle. The 5-stage pipeline experiences a stall due to a data hazard every 5 instructions, whereas the 12-sstage pipeline experiences 3 stalls every 8 instructions. In addition, branches constitute 20\% of the instructions, and the misprediction rate is 5\% for both machines.
+
+\textit{(Machine A is the 5 stage machine, Machine B is the 12 stage machine in my notation below)}
+\begin{adjustwidth}{2.5em}{0pt}
+\subsection{}
+What is the speedup of the 12-stage pipeline over the 5-stage pipeline, taking into account only data hazards?
+
+\vspace{5mm}
+$CPI_{A}=\frac{1+5\ cycles\times{5\ instructions}}{5\ instructions}= 5.2\ cycles/instruction$
+
+\vspace{3mm} 
+$CPI_{B}=\frac{3+12\ cycles\times{8\ instructions}}{8\ instructions} = 12.275\ cycles/instruction$
+
+\vspace{3mm} 
+$Speedup=\frac{CPI_{B}}{CPI_{A}}=2.36$
+\subsection{} 
+If the branch mispredict penalty for the first machine is 2 cycles but the second machine is 5 cycles, what are the CPIs of each, taking into account the stalls due to branch mispredictions?
+
+\vspace{5mm}	
+$CPI=80\%(CPI_{Non-Branch})+20\%(CPI_{Branch})$ 
+
+\vspace{3mm}
+$CPI_{Branch}=(1-5\%)(CPI)+5\%(CPI+Penalty_{Misprediction})$
+
+\vspace{3mm}
+$CPI_{A}=80\%(\frac{5\ cycles}{1\ instruction})+20\%(95\%(\frac{5\ cycles}{1\ instruction})+5\%(\frac{7\ cycles}{1\ instruction}))$
+
+\vspace{3mm}
+$CPI_{B}=80\%(\frac{12\ cycles}{1\ instruction})+20\%(95\%(\frac{12\ cycles}{1\ instruction})+5\%(\frac{17\ cycles}{1\ instruction}))$
+
+\subsection{} 
+What is the speedup of the 12-stage pipeline over the 5-stage pipeline taking into account both the data hazards and the branch hazards?
+\end{adjustwidth}
+\section{}
+Consider the following code fragment: 
+
+\vspace{5mm} 
+\begin{lstlisting}
+DADDI R10, R0, 200
+DADDI R11, R0, 400
+DADDI R3, R0, 100
+LD R4, 0(R10)
+DADD R5, R3, R4
+BEQZ R5, target
+NOP
+DADDI R5, R5, 10
+BR JOIN
+NOP
+TARGET: LD R6, 0(R7)
+DADD R5, R5, R6
+JOIN: SD 0(R11), R5	
+\end{lstlisting}
+
+\vspace{5mm}
+Assume the BEQZ in the instruction sequence above is a delayed branch which currently has a NOP in the delay slot. List the instructions that the compiler can safely put in the delay slot. The instruction may come before the branch, the follow-through, or the branch target. For each scheduling strategy, indicate the branch penalty if the branch is not taken and the branch penalty if the branch is taken. That is, you need to fill in a table like below.  For example, assuming the branch is resolved in the D stage in the MIPS pipeline, if the instrucqtion comes from the follow-through and the branch isn't taken then the penalty is 0.  However, if the branch is taken, the penalty is 1 because the instruction in the delay slot didn't need to be executed (although it was safe to do so).
+
+\vspace{5mm}
+\begin{tabular}{|l||l|l|l|}
+\hline
+\textbf{Scheduling Strategy} & \textbf{Instruction} & \textbf{Penalty if branch taken} & \textbf{Penalty if branch not taken} \\
+\hline
+\textbf{From Before} & 2 & 0& 0\\ 
+\textbf{From Target} & 11 & 0 & 1\\ 
+\textbf{From Fall-through} & 7 & 1&0 \\
+
+\hline
+	
+\end{tabular}
+\pagebreak
+\section{} 
+Make the following assumptions about a machine using scoreboarding
+
+\begin{itemize}
+		\item Issue takes 1 cycle
+\item Read Operands take 1 cycle
+\item Integer instructions require 1 execution cycle
+\item Loads/Stores require one execution cycle
+\item Memory accesses are performed in the EX step, thus stores don't go through a WR step
+\item Floating point addition requires 3 execution cycles
+\item Floating point multiply requires 5 execution cycles
+\item Branches require 1 execution cycle and are predicted as taken
+\item If prediction is wrong, branches modify the PC in the WR stage
+\item The machine consists of 3 integer units, 1 floating point multiply units and 1 floating point adder, none of which are pipelined.
+\end{itemize}
+\begin{adjustwidth}{2.5em}{0pt}
+\subsection{}
+Using the assumptions above, draw a timing diagram for two iterations of following loop: 
+
+
+\begin{lstlisting}
+foo: L.D F2, 0(R1)
+MULT.D F4, F2, F0
+L.D F6, 0(R2)
+ADD.D F6, F4, F6
+S.D F6, 0(R2)
+DADDUI R1, R1, #8
+DADDUI R2, R2, #8
+DSGTUI R3, R1, done 
+BEQZ R3, foo
+\end{lstlisting}
+%;integer operation: R3 = R1 > done
+
+
+\vspace{5mm}
+
+\vspace{5mm}
+\begin{tabular}{|p{3.5cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|p{.2cm}|}
+\hline
+\textbf{Instruction}&\textbf{1} &\textbf{2} &\textbf{3} &\textbf{4} &\textbf{5} &\textbf{6} &\textbf{7} &\textbf{8} &\textbf{9} &\textbf{10} &\textbf{11} &\textbf{12} &\textbf{13} &\textbf{14} &\textbf{15} &\textbf{16} &\textbf{17} \\
+\hline
+\texttt{MULT.D F4, F2}, F0& I& R& X& X& X& X& X& W& & & & & & & & & \\
+\texttt{L.D F6, 0(R2)}& & I& R& X& W& & & & & & & & & & & & \\
+\texttt{ADD.D F6, F4, F6}& & & I& S& S& S& S& S& R& X& X& X& W& & & & \\
+\texttt{S.D F6, 0(R2)}& & & & I& S& S& S& S& S& S& S& S& S& R& X& W& \\
+\texttt{DADDUI R1, R1, \#8}& & & & & I& R& X& W& & & & & & & & & \\
+\texttt{DADDUI R2, R2, \#8}& & & & & & I& S& S& S& S& S& S& S& S& S& S& R\\
+\texttt{DSGTUI R3, R1, done} & & & & & & & I& S& R& X& W& & & & & & \\
+\texttt{BEQZ R3, foo}& & & & & & & & I& S& S& S& R& X& W& & & \\
+\texttt{MULT.D F4, F2, F0}& & & & & & & & & I& S& S& S& S& S& S& S& R\\
+\texttt{L.D F6, 0(R2)}& & & & & & & & & & I& S& S& S& S& S& S& S\\
+\texttt{ADD.D F6, F4, F6} & & & & & & & & & & & I& S& S& S& S& S& S\\
+\texttt{S.D F6, 0(R2)} & & & & & & & & & & & & I& S& S& S& S& S\\
+\texttt{DADDUI R1, R1, \#8} & & & & & & & & & & & & & I& R& X& W& \\
+\texttt{DADDUI R2, R2, \#8} & & & & & & & & & & & & & & I& S& S& S \\ 
+\texttt{DSGTUI R3, R1, done} & & & & & & & & & & & & & & & I& S& R\\
+\texttt{BEQZ R3, foo} & & & & & & & & & & & & & & & & I& S\\
+\hline
+\textbf{Instruction}&\textbf{18}&\textbf{19}&\textbf{20}&\textbf{21}&\textbf{22}&\textbf{23}&\textbf{24}&\textbf{25}&\textbf{26}&\textbf{27}&\textbf{28}&\textbf{29}&\textbf{30}&\textbf{31}&\textbf{32}&\textbf{33}&\textbf{34}\\
+\hline
+\texttt{MULT.D F4, F2, F0} & & & & & & & & & & & & & & & & & \\
+\texttt{L.D F6, 0(R2)} & & & & & & & & & & & & & & & & & \\
+\texttt{ADD.D F6, F4, F6} & & & & & & & & & & & & & & & & &\\ 
+\texttt{S.D F6, 0(R2)} & & & & & & & & & & & & & & & & & \\
+\texttt{DADDUI R1, R1, \#8} & & & & & & & & & & & & & & & & & \\
+\texttt{DADDUI R2, R2, \#8} & X& W& & & & & & & & & & & & & & & \\
+\texttt{DSGTUI R3, R1, done} & & & & & & & & & & & & & & & & & \\
+\texttt{BEQZ R3, foo} & & & & & & & & & & & & & & & & & \\
+\texttt{MULT.D F4, F2, F0} & X& X& X& X& X& W& & & & & & & & & & & \\
+\texttt{L.D F6, 0(R2)}& S& S& R& X& W& & & & & & & & & & & & \\
+\texttt{ADD.D F6, F4, F6}& S& S& S& S& S& S& R& X& X& X& W& & & & & & \\
+\texttt{S.D F6, 0(R2)}& S& S& S& S& S& S& S& S& S& S& S& R& X& W& & & \\
+\texttt{DADDUI R1, R1, \#8}& & & & & & & & & & & & & & & & & \\
+\texttt{DADDUI R2, R2, \#8}& S& S& S& S& S& S& S& S& S& S& S& S& S& S& R& X& W\\
+\texttt{DSGTUI R3, R1, done} & X& W& & & & & & & & & & & & & & & \\
+\texttt{BEQZ R3, foo} & S& S& R& X& W& & & & & & & & & & & & \\
+\hline
+\end{tabular}
+
+\subsection{}
+In this scoreboard, one set of buses (one output and two input) serve each group of functional units. (See Figure C.54, page C-73.) Using the same assumptions as above, derive a sequence of instructions in which an instruction is stalled due to insufficient sets of buses (a structural hazard). Draw the timing diagram.
+
+\vspace{5mm} 
+\textbf{Consider the code: } 
+\begin{lstlisting} 
+L.D F1, 0(R2)
+ADD.D F0, F1, F1
+L.D F5, 0(R2)
+ADD.D F2, F3, F3
+\end{lstlisting} 
+
+\vspace{3mm}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|} 
+\hline
+\textbf{Instruction}& \textbf{1}& \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9}\\
+\hline
+\texttt{L.D F1, 0(R2)} & I & R & X & W & & & & &\\ 
+\texttt{ADD.D F0, F1, F1} & & I & S & S & R & X & X & X & W\\
+\texttt{L.D F5, 0(R2)} & & & I & R & X & W & & &\\
+\texttt{ADD.D F2, F3, F3} & & & & I & R & X & X & X & W\\
+\hline
+\end{tabular}
+
+\vspace{3mm}
+In the code shown above, both the \texttt{ADD.D F0, F1, F1} and the \texttt{ADD.D F2, F3, F3} instructions complete execution at the same time. This introduces a hazard as the only output bus is going to be occupied by the output of the first instruction when the second needs to write its result.
+\end{adjustwidth}
+\section{}
+The table below lists a sequence of branches and their behavior.  The behavior NT indicates that the branch was not-taken.  The behavior T indicates the branch was taken.
+
+\vspace{5mm}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Branch} & \textbf{Behavior} & \textbf{Prediction} & \textbf{New Prediction} & \textbf{Prediction} & \textbf{New Prediction} \\
+\hline
+B1 & NT & 0 & 0& 00 & 00\\
+B2 & NT & 0 & 0& 00 & 00\\
+B3 & T & 0 & 1& 00 & 01 \\
+B1 & NT & 0 & 0& 00& 00\\ 
+B2 & T & 0& 1& 00& 01\\ 
+B3 & T & 1& 1& 01& 11\\ 
+B1 & NT & 0& 0& 00& 00\\ 
+B2 & NT & 1& 0& 01& 00\\ 
+B3 & T & 1& 1& 11& 11\\ 
+B1 & NT & 0& 0& 00& 00\\ 
+B2 & T & 0& 1& 00& 01\\ 
+B3 & T & 1& 1& 11& 11\\ 
+B1 & NT & 0& 0& 00& 00\\ 
+B2 & NT & 1& 0& 01& 00\\ 
+B3 & T & 1& 1& 11&  11\\ 
+B1 & T & 0& 1& 00& 01\\ 
+\hline
+\end{tabular}
+
+
+\section{}
+Answer the following questions about scoreboarding.
+\begin{adjustwidth}{2.5em}{0pt}
+\subsection{}
+The scoreboard supports out-of-order execution. What does this mean? How is it provided?
+
+\vspace{5mm}
+\textbf{Out of order execution allows you to make use of instruction cycles that would otherwise be wasted. The score board provides an ability to do this by essentially checking a "scoreboard" on each cycle to determine when an instructions parameters are available and when it can be executed.}
+
+\subsection{} 
+Assume that exceptions can occur in the execution stage.  Explain why precise exception handling is difficult to provide on a scoreboarding machine. Provide an example of code to help explain your answer.
+
+\vspace{5mm}
+Because multiple instructions are being executed at any one point, multiple functional units are doing different things at the same time. Because of this, it is possible that a longer running instruction though started first may except after a shorter running instruction that started later. 
+
+Given the example:
+
+\vspace{3mm} 
+\begin{lstlisting}
+	DIV.D F1, F0, F2
+	ADD.D F0, F3, F4	
+\end{lstlisting}
+
+\vspace{3mm}
+The floating point divide functional unit takes 5 cycles to calculate the result of the \texttt{DIV.D F1, F0, F2} instruction and the floating point add unit takes 3 cycles to calculate the result of the \texttt{ADD.D F0, F3, F4} instruction. As a result, the add is going to be finished when the floating point divide unit needs one remaining cycle to execute. If an overflow occurs in the addition unit, and a divide-by-zero occurs in the divide unit, the overflow is going to get processed first. 
+
+\subsection{}
+What hazard(s) must be handled by the scoreboard that don't have to be handled in the MIPS 5-stage pipeline with multi-cycle functional units? Why isn't this hazard present in the MIPS 5-stage pipeline with multi-cycle functional units?
+\vspace{5mm}
+\begin{itemize}
+\item \textbf{WAW} - Write after Write Hazard. Technically possible while using the divide unit on the mips 5 stage pipeline because it isn't pipelined. Much more common on a scoreboarding machines as instructions are being executed in parallel and out of order. 
+\begin{lstlisting}
+	ADD.D F0, F1, F4
+	L.D F0, 0(R1)
+\end{lstlisting}
+Because it takes so much longer to perform a floating point add than a read from memory, the \texttt{L.D F0, 0(R1)} instruction is going to finish first. As a result, when the add finishes several cycles later, it will write it's result and F0 will contain the result of \texttt{ADD.D F0, F1, F4}
+\item \textbf{WAR} - Write after Read Hazard. A hazard that occurs when an instruction expecting a result from a long running instruction
+\begin{lstlisting}
+	DIV.D F3, F2, F1
+	DIV.D F2, F3, F4
+	L.D F4, 0(R1)
+\end{lstlisting}
+In this example, the \texttt{DIV.D F2, F3, F4} instruction is going to be stalled waiting for access to the floating point unit. In this time, the \texttt{L.D F4, 0(R1)} would be able to finish and write the result to F4. If this were to happen, the \texttt{DIV.D F2, F3, F4} could potentially read the value of F4 after it has been written.
+\end{itemize}
+\end{adjustwidth}
+\end{document}

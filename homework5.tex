@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{multirow}
+\usepackage{sectsty}
+\usepackage{lipsum}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\geometry{
+    a4paper,
+    left=20mm,
+    top=20mm,
+    bottom=20mm,
+    right=20mm
+}
+\usepackage{listings}
+\setlength{\columnsep}{0cm}
+\title{Architecture Problem Set 5}
+\author{Taylor King }
+\date{April 2016}
+\sectionfont{\Large} 
+\subsectionfont{\large}
+\usepackage{changepage}
+\usepackage{listings}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+  numbers = left
+}
+\lstset{escapechar=;,style=customasm}
+\begin{document}
+
+\maketitle
+\end{document}

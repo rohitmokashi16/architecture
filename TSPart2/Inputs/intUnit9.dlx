@@ -1,0 +1,16 @@
+    addi r1, r2, 33
+    movi2fp f1, r1
+    movf f2, f1
+    movfp2i r2, f2
+    addi r3, r0, s1
+    trap r3, 3
+    trap r1, 1
+    addi r4, r0, s2
+    trap r4, 3
+    trap r2, 1
+    addi r5, r0, s3
+    trap r5, 3
+    trap r0, 0
+s1: .asciiz "\nThis number: "
+s2: .asciiz "\nshould be the same as this number: "
+s3: .asciiz "\n"

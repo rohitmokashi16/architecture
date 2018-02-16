@@ -1,0 +1,20 @@
+;   test write after read
+    lf f2, num2 
+    lf f1, num1
+    sf num1, f2
+    addi r1, r0, s1
+    trap r1, 3          ;dump string
+    lf f3, num1
+    trap f3, 2          ;dump f3
+    addi r1, r0, s2
+    trap r1, 3          ;dump string
+    lf   f4, num2
+    trap f4, 2          ;dump register 5
+    addi r1, r0, nl
+    trap r1, 3          ;dump string
+    trap r0, 0        ;halt
+num1: .float -23.4
+num2: .float 1.4
+s1: .asciiz "\nThese should be equal: "
+s2: .asciiz ",  "
+nl: .asciiz "\n"

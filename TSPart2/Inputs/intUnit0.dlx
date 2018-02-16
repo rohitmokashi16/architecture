@@ -1,0 +1,6 @@
+    addi r1, r0, 13
+    addi r2, r0, s         
+    trap r2, 3              ;dump string
+    trap r1, 1              ;dump register
+    trap r0, 0              ;halt
+s:  .asciiz "\nThe number is: "

@@ -1,0 +1,9 @@
+addi r3, r0, label1
+addi r3, r0, label1
+.space 4
+.data 0x400
+.asciiz "hello there"
+.double 3.14, 4.12, -1.5
+label1:	.word 0x32, 14, -1, 24
+label2:	.space 16
+.asciiz "ends here"

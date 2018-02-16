@@ -1,0 +1,19 @@
+;   test read after write
+    lf f2, num1         ; f2 = mem[num1]
+    addi r1, r0, s1
+    trap r1, 3          ;dump string
+    sf num2, f2         ; mem[num2] = f2
+    lf f3, num2         ; f3 = mem[num2]
+    trap f2, 2          ;dump f3
+    addi r1, r0, s2
+    trap r1, 3          ;dump string
+    lf   f4, num2
+    trap f4, 2          ;dump register 
+    addi r1, r0, nl
+    trap r1, 3          ;dump string
+    trap r0, 0        ;halt
+num1: .float -23.4
+num2: .float 1.4
+s1: .asciiz "\nThese should be equal: "
+s2: .asciiz ",  "
+nl: .asciiz "\n"

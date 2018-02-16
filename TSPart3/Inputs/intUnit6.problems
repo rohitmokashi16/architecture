@@ -1,0 +1,136 @@
+404c405
+< End of clock cycle  12
+---
+> 3End of clock cycle  12
+472c473
+< End of clock cycle  14
+---
+>  plus End of clock cycle  14
+508c509
+< End of clock cycle  15
+---
+> 6End of clock cycle  15
+576c577
+< End of clock cycle  17
+---
+>  is End of clock cycle  17
+612c613
+< End of clock cycle  18
+---
+> 9End of clock cycle  18
+787c790
+< End of clock cycle  23
+---
+> 3End of clock cycle  23
+855c858
+< End of clock cycle  25
+---
+>  minus End of clock cycle  25
+891c894
+< End of clock cycle  26
+---
+> 6End of clock cycle  26
+959c962
+< End of clock cycle  28
+---
+>  is End of clock cycle  28
+995c998
+< End of clock cycle  29
+---
+> -3End of clock cycle  29
+1170c1175
+< End of clock cycle  34
+---
+> 3End of clock cycle  34
+1238c1243
+< End of clock cycle  36
+---
+>  and End of clock cycle  36
+1274c1279
+< End of clock cycle  37
+---
+> 6End of clock cycle  37
+1342c1347
+< End of clock cycle  39
+---
+>  is End of clock cycle  39
+1378c1383
+< End of clock cycle  40
+---
+> 2End of clock cycle  40
+1553c1560
+< End of clock cycle  45
+---
+> 3End of clock cycle  45
+1621c1628
+< End of clock cycle  47
+---
+>  or End of clock cycle  47
+1657c1664
+< End of clock cycle  48
+---
+> 6End of clock cycle  48
+1725c1732
+< End of clock cycle  50
+---
+>  is End of clock cycle  50
+1761c1768
+< End of clock cycle  51
+---
+> 7End of clock cycle  51
+1936c1945
+< End of clock cycle  56
+---
+> 3End of clock cycle  56
+2004c2013
+< End of clock cycle  58
+---
+>  xor End of clock cycle  58
+2040c2049
+< End of clock cycle  59
+---
+> 6End of clock cycle  59
+2108c2117
+< End of clock cycle  61
+---
+>  is End of clock cycle  61
+2144c2153
+< End of clock cycle  62
+---
+> 5End of clock cycle  62
+2148a2158
+> TrapUnit3        1     halt 00000000 00000000                     00000000       --       --      --
+2179a2190
+> TrapUnit3        1     halt 00000000 00000000                     00000000       --       --      --
+2207a2220,2250
+> Trap Unit:
+>      Name     Busy       Op       Vj       Vk        Qj        Qk        A   Result  X-Start    X-End
+> TrapUnit3        1     halt 00000000 00000000                     00000000 00000000       64       64 
+> 
+> General Purpose Registers:
+> R0-R7:   00000000 00000003 00000006 00000009 fffffffd 00000002 00000007 00000005 
+> R8-R15:  000000fc 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> R16-R23: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> R24-R31: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> 
+> Floating Point Registers:
+> F0-F7:   00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> F8-F15:  00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> F16-R23: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> F24-F31: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> 
+> Memory:
+> 0000: 20010003 20020006 00221820 00222022 00222824 00223025 00223826 200800fc 
+> 0020: 45000003 44200001 20080104 45000003 44400001 200800ff 45000003 44600001 
+> 0040: 200800fc 45000003 200800fc 45000003 44200001 2008010b 45000003 44400001 
+> 0060: 200800ff 45000003 44800001 200800fc 45000003 200800fc 45000003 44200001 
+> 0080: 20080113 45000003 44400001 200800ff 45000003 44a00001 200800fc 45000003 
+> 00a0: 200800fc 45000003 44200001 20080119 45000003 44400001 200800ff 45000003 
+> 00c0: 44c00001 200800fc 45000003 200800fc 45000003 44200001 2008011e 45000003 
+> 00e0: 44400001 200800ff 45000003 44e00001 200800fc 45000003 44000000 0a000020 
+> 0100: 69732000 20706c75 73200020 6d696e75 73200020 616e6420 00206f72 20002078 
+> 0120: 6f722000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 
+> 0140: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 *
+> 
+> End of clock cycle  65
+> ----------------------

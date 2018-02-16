@@ -1,0 +1,272 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{multirow}
+\usepackage{sectsty}
+\usepackage{lipsum}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\geometry{
+    a4paper,
+    left=20mm,
+    top=20mm,
+    bottom=20mm,
+    right=20mm
+}
+\usepackage{listings}
+\setlength{\columnsep}{0cm}
+\title{Architecture Problem Set 4}
+\author{Taylor King }
+\date{April 2016}
+\sectionfont{\Large} 
+\subsectionfont{\large}
+\usepackage{changepage}
+\usepackage{listings}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+  numbers = left
+}
+\lstset{escapechar=;,style=customasm}
+\begin{document}
+
+\maketitle
+\section{} Consider the following code that computes the operation Y = aX + Y for a vector length of 100. Initially, R1 is 0 and F0 contains a. 
+
+\vspace{5mm}
+\begin{lstlisting}
+loop: L.D F2, 0(R1)
+MUL.D F4, F2, F0
+L.D F6, 0(R2)
+ADD.D F6, F4, F6
+S.D 0(R2), F6
+DADDUI R1, R1, #8
+DADDUI R2, R2, #8
+DSGTUI R3, R1, #800   //R3 = (R1 > 800)
+BEQZ R3, loop   
+\end{lstlisting}
+
+\vspace{1cm} 
+Make the following assumptions about the machine executing this code:
+\begin{itemize}
+\item The machine is a single-in-order-issue, Tomasulo machine with a single CDB (like the machine described on page 180 in your text).
+\item There are no structural hazards due to insufficient reservation stations or functional units.
+\item The EX stage does both the effective address calculation and the memory access for the load. Stores write to memory during the write step, but do not write to the CDB.
+\item The issue of a branch stalls the execution of subsequent instructions until the branch execution is complete. Branches take one cycle for execution and update the PC in the Write step (if necessary), but do not use the CDB. Branches are predicted as taken.
+\item Loads and stores execute in the order in which they are issued.
+\item If an instruction is stalled at some stage, indicate why in the Comment column.
+\item The number of execute cycles taken by each type functional unit and the instructions served by the functional unit are listed in the table below:	
+\end{itemize}
+
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Type} & \textbf{EX cycles} & \textbf{Instructions} \\
+\hline
+Integer & 1 & Integer ALU, Branches \\
+Memory & 1 & Loads / Stores \\
+FP Adder & 2 & FP add \\
+FP Multiplier & 4 & FP multiply \\
+\hline
+\end{tabular}
+\pagebreak
+\subsection{}
+
+Create a table that looks similar to the table below for two iterations of the loop (Fill the Executes/Mem-Read column with values like 4,7 to indicate that execution begins in cycle 4 and ends in cycle 7. For instructions that take only one cycle to execute, you only need to give one number.
+
+\vspace{5mm} 
+\begin{tabular}{|l|p{2cm}|p{2cm}|p{2cm}|l|}
+\hline 
+\textbf{Instruction} & \textbf{Issues at} & \textbf{Executes} & \textbf{CDB-Write} & \textbf{Comment} \\
+\hline
+L.D F2, 0(R1) & 1 & 2 & 3 & \\
+MUL.D F4, F2, F0 & 2 & 4 & 8 & Wait for F2 on the CDB \\
+L.D F6, 0(R2) & 3 & 4 & 5 & \\
+ADD.D F6, F4, F6 & 4 & 9 & 11 & Wait for F4 on the CDB\\ 
+S.D 0(R2), F6 & 5 & 6 & & \\
+DADDUI R1, R1, \#8 & 6 & 7 & 9& Stalled for CDB \\
+DADDUI R2, R2, \#8 & 7 & 8 & 10 & \\ 
+DSGTUI R3, R1, \#800 & 8 & 9 & 12 & Stalled for CDB \\
+\hline
+BEQZ R3, loop & 9 & 13 & & \\
+\hline
+L.D F2, 0(R1) & 10 & 11 & 13 & Stalled for CDB\\
+MUL.D F4, F2, F0 & 11 & 14 & 18 & Wait for F2 on the CDB \\
+L.D F6, 0(R2) & 12 & 13 & 14 & \\
+ADD.D F6, F4, F6 & 13 & 19 & 21 & Wait for F4 on the CDB\\ 
+S.D 0(R2), F6 & 14 & 15 & & Address calculation can begin\\
+DADDUI R1, R1, \#8 & 15 & 16 & 17& Stalled for CDB\\
+DADDUI R2, R2, \#8 & 16 & 17 & 18  & Stalled for CDB\\ 
+DSGTUI R3, R1, \#800 & 17 & 18 & 19 & Stalled for CDB\\
+\hline
+BEQZ R3, loop & 18 & 21 & & \\
+\hline
+\end{tabular}
+\subsection{} 
+What is the approximate cycles per element (CPE)? 
+
+\vspace{5mm} 
+\textbf{Because the next load can issue on cycle 10, the CPE is 10 cycles/element} 
+
+\section{}
+Repeat problem 1 but assume hardware speculation.  Thus the table will have an extra column for the commit step.  Recall that stores write to memory in the commit step.  Ignore the commit when calculating CPE.
+
+\vspace{5mm}
+\begin{tabular}{|l|p{2cm}|p{2cm}|p{2cm}|l|}
+\hline 
+\textbf{Instruction} & \textbf{Issues at} & \textbf{Executes} & \textbf{CDB-Write} & \textbf{Commits} \\
+\hline
+L.D F2, 0(R1) & 1 & 2 & 3 & 4 \\
+MUL.D F4, F2, F0 & 2 & 4 & 8 & 9 \\
+L.D F6, 0(R2) & 3 & 4 & 5 & 10 \\
+ADD.D F6, F4, F6 & 4 & 9 & 11 & 12 \\ 
+S.D 0(R2), F6 & 5 & 6 & & \\
+DADDUI R1, R1, \#8 & 6 & 7 & 9& 13 \\
+DADDUI R2, R2, \#8 & 7 & 8 & 10 & 14 \\ 
+DSGTUI R3, R1, \#800 & 8 & 9 & 12 & 15 \\
+\hline
+BEQZ R3, loop & 9 & 13 & & \\
+\hline
+L.D F2, 0(R1) & 10 & 11 & 13 & 16 \\
+MUL.D F4, F2, F0 & 11 & 14 & 18 &  19\\
+L.D F6, 0(R2) & 12 & 13 & 14 & 20\\
+ADD.D F6, F4, F6 & 13 & 19 & 21 & 22\\ 
+S.D 0(R2), F6 & 14 & 15 & & \\
+DADDUI R1, R1, \#8 & 15 & 16 & 18& 23 \\
+DADDUI R2, R2, \#8 & 16 & 17 & 19  &  24 \\ 
+DSGTUI R3, R1, \#800 & 17 & 18 & 20 &  24 \\
+\hline
+BEQZ R3, loop & 18 & 21 & & \\
+\hline
+\end{tabular}
+
+
+\section{} Repeat problem 1 but assume two instructions can be issued and executed per clock cycle.  In addition, assume a CDB with a width of two and the ability to commit up to two instructions per clock cycle. The two instructions issued must be within the same iteration.
+
+\vspace{5mm}
+\begin{tabular}{|l|p{2cm}|p{2cm}|p{2cm}|l|}
+\hline 
+\textbf{Instruction} & \textbf{Issues at} & \textbf{Executes} & \textbf{CDB-Write} & \textbf{Comment} \\
+\hline
+L.D F2, 0(R1) & 1 & 2 & 3 & \\
+MUL.D F4, F2, F0 & 1 & 4 & 8 & Wait for F2 on the CDB \\
+L.D F6, 0(R2) & 2 & 3 & 4 & \\
+ADD.D F6, F4, F6 & 2 & 9 & 11 & Wait for F4 on the CDB\\ 
+S.D 0(R2), F6 & 3 & 4 & & \\
+DADDUI R1, R1, \#8 & 3 & 4 & 5& \\
+DADDUI R2, R2, \#8 & 4 & 5 & 6 & \\ 
+DSGTUI R3, R1, \#800 & 4 & 5 & 7 & Stalled for CDB \\
+\hline
+BEQZ R3, loop & 5 & 8 & & \\
+\hline
+L.D F2, 0(R1) & 5 & 6 & 9 & Stalled for CDB\\
+MUL.D F4, F2, F0 & 6 & 10 & 14 & Wait for F2 on the CDB \\
+L.D F6, 0(R2) & 6 & 7 & 10 & Stalled for CDB \\
+ADD.D F6, F4, F6 & 7 & 15 & 17 & Wait for F4 on the CDB\\ 
+S.D 0(R2), F6 & 7 & 8 & & Address calculation can begin\\
+DADDUI R1, R1, \#8 & 8 & 9 & 12& Stalled for CDB\\
+DADDUI R2, R2, \#8 & 8 & 9 & 13& Stalled for CDB\\ 
+DSGTUI R3, R1, \#800 & 9 & 10 & 15 & Stalled for CDB\\
+\hline
+BEQZ R3, loop & 9 & 16 & & \\
+\hline
+\end{tabular}
+
+\section{} Unroll the code in problem 1 two iterations and do register renaming.  Build a VLIW program from the unrolled code.  Assume that each VLIW instruction consists of an operation for each of the four functional units indicated in the table. Note that the number of intervening instructions between two dependent instructions is equal to the number of EX cycles.  Be sure to eliminate unnecessary overhead.
+\subsection{}
+Give the VLIW program.
+
+Unrolled code:
+\begin{lstlisting}
+loop: L.D F2, 0(R1)
+L.D F3, 8(R1)
+MUL.D F4, F2, F0
+MUL.D F5, F3, F0
+L.D F6, 0(R2)
+L.D F7, 8(R2)
+ADD.D F6, F4, F6
+ADD.D F7, F5, F7
+S.D 0(R2), F6
+S.D 8(R2), F7
+DADDUI R1, R1, \#16
+DADDUI R2, R2, \#16
+DSGTUI R3, R1, \#800   //R3 = (R1 > 800)
+BEQZ R3, loop   
+\end{lstlisting}
+
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+Load / Store & Int ALU & FP Add & FP Mult & Clock\\
+\hline
+L.D F2, 0(R1) & DADDUI R1, R1, \#16 & & & 1\\
+L.D F3, 8(R1) &  DADDUI R2, R2, \#16  & & MUL.D F4, F2, F0 & 2\\
+L.D F6, 0(R2) &  DSGTUI R3, R1, \#800  & & MUL.D F5, F3, F0 &  3 \\
+L.D F7, 8(R2) & BEQZ R3, loop & & & 4\\
+&  & & & 5\\
+&  & ADD.D F6, F4, F6 & & 6\\
+& & ADD.D F7, F5, F7 & & 7\\
+S.D 0(R2), F6 & & & & 8 \\
+S.D 8(R2), F7 & & & & 9 \\
+\hline
+
+\end{tabular}
+
+
+\subsection{}
+What is the cycles per element (CPE)?
+
+
+\textbf{5 Cycles / element}
+\subsection{}
+What percentage of the operation slots are used? 
+
+\textbf{36\%}
+\subsection{}
+Answer b. and c. assuming the loop is unrolled three times. (You don't need to give the VLIW program.)
+
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+Load / Store & Int ALU & FP Add & FP Mult & Clock\\
+\hline
+L.D F2, 0(R1) &DADDUI R1, R1, \#24  & & & 1\\
+L.D F3, 8(R1) &DADDUI R2, R2, \#24 & & MUL.D F4, F2, F0 & 2\\
+L.D F9, 16(R1) & DSGTUI R3, R1, \#800& & MUL.D F5, F3, F0 &  3  \\
+L.D F6, 0(R2) &BEQZ R3, loop    & & MUL.D F11, F9, F0 & 4\\
+L.D F7, 8(R2) &  & & & 5\\
+L.D F13, 16(R2) &  & ADD.D F6, F4, F6  & & 6\\
+&    &  ADD.D F7, F5, F7 & & 7\\
+S.D 0(R2), F6 & & ADD.D F14, F11, F13 & & 8\\
+S.D 8(R2), F7 & & & & 9 \\
+S.D 16(R2), F14 & & & & 10 \\
+\hline
+\end{tabular}
+
+\vspace{5mm}
+\textbf{45\% of operations are utilized} 
+
+\textbf{3.667 Cycles / Element}
+
+\section{}
+Suppose we have a deeply pipelined processor, for which we implement a branch-target buffer for the conditional branches only. Assume that the misprediction penalty is always four cycles and the buffer miss penalty is always 3 cycles. Assume a 90\% hit rate , 90\% accuracy, and 15\% branch frequency. How much faster is the processor with the branch target buffer verus a processor that has a fixed two-cycle branch penalty?
+
+\vspace{5mm}
+$P_{Buffer}=Frequency_{Branch}\times{1-accuracy}\times{1-hit\ rate}\times{penalty}$
+
+$P_{Buffer}=.0045$ 
+
+\vspace{5mm}
+$P_{No\ Buffer}=Frequency_{Branch}\times{1-accuracy}\times{penalty}$
+
+$P_{No\ Buffer}=.03$
+
+\vspace{5mm}
+$Speed up=\frac{T_{old}}{T_{new}}$
+
+$Speed up=6.6667$
+\end{document}
